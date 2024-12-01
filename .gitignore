@@ -1,0 +1,9 @@
+# Cargo
+target/
+Cargo.lock
+
+# IDE
+.vscode
+
+# AoC Inputs
+inputs/
