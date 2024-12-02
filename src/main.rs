@@ -9,6 +9,7 @@ use std::{
 mod day0;
 
 mod day1;
+mod day2;
 
 fn main() {
     println!("--- AoC 2024! ---\n");
@@ -55,5 +56,5 @@ macro_rules! solution {
 }
 
 fn solutions() -> Vec<Solution> {
-    vec![solution!(day1)]
+    vec![solution!(day1), solution!(day2)]
 }
