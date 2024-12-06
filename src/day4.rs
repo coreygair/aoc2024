@@ -11,7 +11,7 @@ pub fn part1(input: &Input) -> u32 {
 
     for row in 0..input.n_rows() {
         for col in 0..input.n_cols() {
-            if input.is(row, col, 'X') {
+            if input.is_row_col(row, col, 'X') {
                 for dy in -1..1 {
                     'dx: for dx in -1..1 {
                         if dy == 0 && dx == 0 {
@@ -19,7 +19,7 @@ pub fn part1(input: &Input) -> u32 {
                         }
 
                         for (step, c) in [(1, 'M'), (2, 'A'), (3, 'S')] {
-                            if !input.is(row + (dy * step), col + (dx * step), c) {
+                            if !input.is_row_col(row + (dy * step), col + (dx * step), c) {
                                 continue 'dx;
                             }
                         }
@@ -39,11 +39,15 @@ pub fn part2(input: &Input) -> u32 {
 
     for row in 0..input.n_rows() {
         for col in 0..input.n_cols() {
-            if input.is(row, col, 'A') {
-                if ((input.is(row - 1, col - 1, 'S') && input.is(row + 1, col + 1, 'M'))
-                    || (input.is(row - 1, col - 1, 'M') && input.is(row + 1, col + 1, 'S')))
-                    && ((input.is(row + 1, col - 1, 'S') && input.is(row - 1, col + 1, 'M'))
-                        || (input.is(row + 1, col - 1, 'M') && input.is(row - 1, col + 1, 'S')))
+            if input.is_row_col(row, col, 'A') {
+                if ((input.is_row_col(row - 1, col - 1, 'S')
+                    && input.is_row_col(row + 1, col + 1, 'M'))
+                    || (input.is_row_col(row - 1, col - 1, 'M')
+                        && input.is_row_col(row + 1, col + 1, 'S')))
+                    && ((input.is_row_col(row + 1, col - 1, 'S')
+                        && input.is_row_col(row - 1, col + 1, 'M'))
+                        || (input.is_row_col(row + 1, col - 1, 'M')
+                            && input.is_row_col(row - 1, col + 1, 'S')))
                 {
                     count += 1;
                 }
