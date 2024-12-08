@@ -6,6 +6,7 @@ use std::{
 
 mod util {
     pub mod grid;
+    pub mod position;
 }
 
 // Day 0 = template.
@@ -19,6 +20,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
 fn main() {
     println!("--- AoC 2024! ---\n");
@@ -79,5 +81,6 @@ fn solutions() -> Vec<Solution> {
         solution!(day5),
         solution!(day6),
         solution!(day7),
+        solution!(day8),
     ]
 }

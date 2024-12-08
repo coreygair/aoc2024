@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::util::grid::{Direction, Grid, Position};
+use crate::util::{grid::Grid, position::{Direction, Position}};
 
 type Input = (Grid<MapCell>, Position, Direction);
 
