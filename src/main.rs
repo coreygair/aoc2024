@@ -21,6 +21,7 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 
 fn main() {
     println!("--- AoC 2024! ---\n");
@@ -33,7 +34,7 @@ fn main() {
             Err(e) => {
                 println!("{} failed to load input: {}", solution.day, e);
                 continue;
-            },
+            }
         };
 
         let day_start = Instant::now();
@@ -79,8 +80,9 @@ fn solutions() -> Vec<Solution> {
         solution!(day3),
         solution!(day4),
         solution!(day5),
-        solution!(day6),
+        //solution!(day6),
         solution!(day7),
         solution!(day8),
+        solution!(day9),
     ]
 }
