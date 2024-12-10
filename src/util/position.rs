@@ -28,14 +28,14 @@ macro_rules! impl_position_ops {
     ($lhs:ty, $rhs:ty) => {
         impl std::ops::Add<$rhs> for $lhs {
             type Output = Position;
-        
+
             fn add(self, rhs: $rhs) -> Self::Output {
                 Position::new(self.row + rhs.row, self.col + rhs.col)
             }
         }
         impl std::ops::Sub<$rhs> for $lhs {
             type Output = Position;
-        
+
             fn sub(self, rhs: $rhs) -> Self::Output {
                 Position::new(self.row - rhs.row, self.col - rhs.col)
             }
@@ -49,13 +49,13 @@ impl_position_ops!(&Position, &Position);
 
 macro_rules! impl_position_assign_ops {
     ($rhs:ty) => {
-        impl std::ops::AddAssign<$rhs> for Position {        
+        impl std::ops::AddAssign<$rhs> for Position {
             fn add_assign(&mut self, rhs: $rhs) {
                 (*self).row += rhs.row;
                 (*self).col += rhs.col;
             }
         }
-        impl std::ops::SubAssign<$rhs> for Position {        
+        impl std::ops::SubAssign<$rhs> for Position {
             fn sub_assign(&mut self, rhs: $rhs) {
                 (*self).row += rhs.row;
                 (*self).col += rhs.col;
@@ -93,4 +93,11 @@ impl Direction {
             Direction::Left => Direction::Down,
         }
     }
+
+    pub const ALL: [Direction; 4] = [
+        Direction::Up,
+        Direction::Down,
+        Direction::Left,
+        Direction::Right,
+    ];
 }

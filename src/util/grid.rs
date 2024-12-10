@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 use super::position::Position;
 
 // AoC always has quite a few days where the input is a grid of characters,
@@ -59,6 +61,15 @@ impl<E> Grid<E> {
     }
 }
 
+impl<E: Clone> Grid<E> {
+    pub fn iter(&self) -> GridIterator<'_, E> {
+        GridIterator {
+            grid: self,
+            position: Position::new(0, 0),
+        }
+    }
+}
+
 impl<E: PartialEq> Grid<E> {
     pub fn is(&self, pos: Position, element: E) -> bool {
         self.get(pos).map(|e| *e == element).unwrap_or(false)
@@ -66,5 +77,30 @@ impl<E: PartialEq> Grid<E> {
 
     pub fn is_row_col(&self, row: i32, col: i32, element: E) -> bool {
         self.is(Position::new(row, col), element)
+    }
+}
+
+pub struct GridIterator<'a, E> {
+    grid: &'a Grid<E>,
+    position: Position,
+}
+
+impl<E: Clone> Iterator for GridIterator<'_, E> {
+    type Item = (Position, E);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.position.row >= self.grid.n_rows() {
+            return None;
+        }
+
+        // SAFETY: Just did bounds checking.
+        let item = Some((self.position, self.grid.get(self.position).unwrap().clone()));
+
+        self.position.col = (self.position.col + 1) % self.grid.n_cols();
+        if self.position.col == 0 {
+            self.position.row += 1;
+        }
+
+        item
     }
 }
