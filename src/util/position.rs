@@ -75,12 +75,22 @@ pub enum Direction {
 }
 
 impl Direction {
+    pub fn from_arrow(c: char) -> Option<Self> {
+        Some(match c {
+            '^' => Direction::Up,
+            '>' => Direction::Right,
+            'v' => Direction::Down,
+            '<' => Direction::Left,
+            _ => return None,
+        })
+    }
+
     fn to_row_col_diff(self) -> (i32, i32) {
         match self {
             Direction::Down => (1, 0),
-            Direction::Right => (0, -1),
+            Direction::Left => (0, -1),
             Direction::Up => (-1, 0),
-            Direction::Left => (0, 1),
+            Direction::Right => (0, 1),
         }
     }
 

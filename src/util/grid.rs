@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use std::fmt::Write;
 
 use super::position::Position;
 
@@ -12,6 +12,7 @@ impl<E: From<char>> From<&str> for Grid<E> {
         Grid(
             value
                 .lines()
+                .filter(|l| *l != "")
                 .map(|l| l.chars().map(E::from).collect())
                 .collect(),
         )
@@ -21,7 +22,10 @@ impl<E: From<char>> From<&str> for Grid<E> {
 impl<E: From<char> + std::fmt::Debug> std::fmt::Debug for Grid<E> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for l in self.0.iter() {
-            write!(f, "{:?}\n", l)?;
+            for e in l.iter() {
+                write!(f, "{:?}", e)?;
+            }
+            f.write_char('\n')?;
         }
         Ok(())
     }
@@ -77,6 +81,14 @@ impl<E: PartialEq> Grid<E> {
 
     pub fn is_row_col(&self, row: i32, col: i32, element: E) -> bool {
         self.is(Position::new(row, col), element)
+    }
+}
+
+impl<E: Clone + PartialEq> Grid<E> {
+    pub fn find(&self, element: E) -> Option<Position> {
+        self.iter()
+            .find(|(_, e)| *e == element)
+            .and_then(|(p, _)| Some(p))
     }
 }
 
