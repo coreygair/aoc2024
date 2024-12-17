@@ -4,10 +4,10 @@ pub fn parse(input: &str) -> Input {
     todo!()
 }
 
-pub fn part1(input: &Input) -> u32 {
+pub fn part1(input: &Input) -> u64 {
     todo!()
 }
 
-pub fn part2(input: &Input) -> u32 {
+pub fn part2(input: &Input) -> u64 {
     todo!()
 }
