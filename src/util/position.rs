@@ -104,6 +104,15 @@ impl Direction {
         }
     }
 
+    pub fn reversed(self) -> Self {
+        match self {
+            Direction::Down => Direction::Up,
+            Direction::Right => Direction::Left,
+            Direction::Up => Direction::Down,
+            Direction::Left => Direction::Right,
+        }
+    }
+
     pub const ALL: [Direction; 4] = [
         Direction::Up,
         Direction::Down,
