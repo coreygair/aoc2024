@@ -66,6 +66,10 @@ impl<E> Grid<E> {
 }
 
 impl<E: Clone> Grid<E> {
+    pub fn new(rows: usize, cols: usize, element: E) -> Self {
+        Grid(vec![vec![element; cols]; rows])
+    }
+
     pub fn iter(&self) -> GridIterator<'_, E> {
         GridIterator {
             grid: self,
