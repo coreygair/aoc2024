@@ -32,6 +32,7 @@ mod day15;
 mod day16;
 mod day17;
 mod day18;
+mod day19;
 
 fn main() {
     println!("--- AoC 2024! ---\n");
@@ -103,5 +104,6 @@ fn solutions() -> Vec<Solution> {
         solution!(day16),
         solution!(day17),
         solution!(day18),
+        solution!(day19),
     ]
 }
