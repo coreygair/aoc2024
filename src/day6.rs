@@ -1,8 +1,11 @@
 use std::collections::HashSet;
 
-use crate::util::{grid::Grid, position::{Direction, Position}};
+use crate::util::{
+    grid::Grid,
+    position::{Direction, Position},
+};
 
-type Input = (Grid<MapCell>, Position, Direction);
+type Input = (Grid<MapCell>, Position);
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum MapCell {
@@ -34,23 +37,22 @@ pub fn parse(input: &str) -> Input {
         })
         .unwrap();
 
-    (input.into(), start_pos, Direction::Up)
+    (input.into(), start_pos)
 }
 
-pub fn part1((map, start_pos, start_dir): &Input) -> u32 {
-    visited(map, *start_pos, *start_dir).len() as u32
+pub fn part1((map, start_pos): &Input) -> u32 {
+    visited(map, *start_pos, Direction::Up).len() as u32
 }
 
-pub fn part2((map, start_pos, start_dir): &Input) -> u32 {
+pub fn part2((map, start_pos): &Input) -> u32 {
     let mut map = map.clone();
 
-    let mut visited = visited(&map, *start_pos, *start_dir);
-    visited.remove(start_pos);
+    let visited = visited_order(&map, *start_pos, Direction::Up);
     visited
         .iter()
-        .map(|pos| {
+        .map(|(pos, dir)| {
             map.set(*pos, MapCell::Obstruction);
-            let has_loop = contains_loop(&map, *start_pos, *start_dir);
+            let has_loop = contains_loop(&map, pos.moved_in(dir.reversed()), *dir);
             map.set(*pos, MapCell::Empty);
 
             if has_loop {
@@ -84,6 +86,43 @@ fn visited(map: &Grid<MapCell>, start_pos: Position, start_dir: Direction) -> Ha
     }
 
     visited
+}
+
+// For part 2, track the first time we visit each position.
+// By starting from the first visited pos and trying them in visited order,
+// we can simulate from just before hitting the new obstacle
+// instead of all the way from the starting position.
+fn visited_order(
+    map: &Grid<MapCell>,
+    start_pos: Position,
+    start_dir: Direction,
+) -> Vec<(Position, Direction)> {
+    let mut visited_order = Vec::new();
+    let mut visited = HashSet::new();
+
+    let mut pos = start_pos.clone();
+    visited.insert(pos);
+
+    let mut dir = start_dir.clone();
+    loop {
+        let new_pos = pos.moved_in(dir);
+        match map.get(new_pos) {
+            None => break,
+            Some(MapCell::Empty) => {
+                if !visited.contains(&new_pos) {
+                    visited_order.push((new_pos, dir));
+                    visited.insert(new_pos);
+                }
+
+                pos = new_pos;
+            }
+            Some(MapCell::Obstruction) => {
+                dir = dir.rotated_clockwise();
+            }
+        }
+    }
+
+    visited_order
 }
 
 fn contains_loop(map: &Grid<MapCell>, start_pos: Position, start_dir: Direction) -> bool {

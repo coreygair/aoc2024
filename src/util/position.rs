@@ -97,10 +97,10 @@ impl Direction {
     // 90 deg rotation.
     pub fn rotated_clockwise(self) -> Self {
         match self {
-            Direction::Down => Direction::Right,
-            Direction::Right => Direction::Up,
-            Direction::Up => Direction::Left,
-            Direction::Left => Direction::Down,
+            Direction::Down => Direction::Left,
+            Direction::Right => Direction::Down,
+            Direction::Up => Direction::Right,
+            Direction::Left => Direction::Up,
         }
     }
 
