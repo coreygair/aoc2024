@@ -22,6 +22,11 @@ impl Position {
             col: self.col + d_col,
         }
     }
+
+    /// Manhattan dist
+    pub fn distance_to(&self, other: &Position) -> u32 {
+        self.row.abs_diff(other.row) + self.col.abs_diff(other.col)
+    }
 }
 
 macro_rules! impl_position_ops {
@@ -83,6 +88,15 @@ impl Direction {
             '<' => Direction::Left,
             _ => return None,
         })
+    }
+
+    pub fn to_arrow(self) -> char {
+        match self {
+            Direction::Up => '^',
+            Direction::Right => '>',
+            Direction::Down => 'v',
+            Direction::Left => '<',
+        }
     }
 
     fn to_row_col_diff(self) -> (i32, i32) {
